@@ -7,6 +7,7 @@ def zerarColuna(matriz,linha,matrizB):
         #subtrair linhas
         for j in range(coluna,len(matriz)):
             matriz[i][j] -= matriz[linha][j]*multiplicador    
+
 def imprime(matriz):
     for linha in matriz:
         print(linha)
