@@ -73,8 +73,7 @@ def triangular_superior(matriz,vet):
         soma = 0
         for j in range(i):
             soma += matriz[i][j]*vet_resp[j]
-        vet_resp.append((vet[i]-soma)//matriz[i][i])
-    print(vet_resp)
+        vet_resp.append((vet[i]-soma)/matriz[i][i])
     return vet_resp
 
 def triangular_inferior(matriz,vet):
@@ -83,35 +82,22 @@ def triangular_inferior(matriz,vet):
         soma = 0
         for j in range(len(matriz)-1,i-1,-1):
             soma += matriz[i][j]*vet_resp[j]
-        vet_resp[i] = (vet[i]-soma)//matriz[i][i]
-    print(vet_resp)
+        vet_resp[i] = (vet[i]-soma)/matriz[i][i]
     return vet_resp
 
 if __name__ == '__main__':
-    matriz =    [[2,-1,4,0],
-                [4,-1,5,1],
-                [-2,2,-2,3],
-                [0,3,-9,4]]
-    # decompor(matriz)
-    # matriz =    [[1,0,0],
-    #             [2,1,0],
-    #             [-1,0,1]]
-    # b = [2,-1,1]
-    # resolverSistema()
-    # triangular_superior(matriz,b)
-    # matriz =    [[2,3,-1],
-    #             [0,-2,1],
-    #             [0,0,3]]
-    # b = [4,-7,13,-13]
-    # matriz =    [[2,2,1,1],
-    #             [0,-1,-1,-5],
-    #             [0,0,3,13],
-    #             [0,0,0,-13]]
-    # triangular_inferior(matriz,b)
-    # triangular_inferior(matriz,b)
-    # matriz =    [[2,3,-1],
-    #             [4,4,-1],
-    #             [-2,-3,4]]
-    # decompor(matriz)
-    b = [5,9,1,-2]
+    # matriz =    [[2.0,-1.0,4.0,0.0],
+    #             [4.0,-1.0,5.0,1.0],
+    #             [-2.0,2.0,-2.0,3.0],
+    #             [0.0,3.0,-9.0,4.0]]
+    # b = [5,9,1,-2]
+    dimensao = int(input("Digite a quantidade de linhas: "))
+    matriz = []
+    for i in range(dimensao):
+        linha = input("Digite a linha: ").split(" ")
+        linha = [ float(x) for x in linha ]    
+        matriz.append(linha)
+    b = input("Digite o vetor b: ").split(" ")
+    b = [ float(x) for x in b]
+
     resolverSistema(matriz,b)
