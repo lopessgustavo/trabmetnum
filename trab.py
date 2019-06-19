@@ -6,7 +6,7 @@ def zerarColuna(matriz,linha,matrizB):
         matrizB[i][coluna] = multiplicador
         #subtrair linhas
         for j in range(coluna,len(matriz)):
-            matriz[i][j] -= matriz[linha][j]*multiplicador    
+            matriz[i][j] -= matriz[linha][j]*multiplicador
 
 def imprime(matriz):
     for linha in matriz:
@@ -32,18 +32,50 @@ def matriz_de_zeros(tam):
 
 def eliminacaoGauss(matriz):
     # verificarDiagonalPrincipal(matriz)
-    mZeros = matriz_de_zeros(len(matriz))
+    matriz_l = matriz_de_zeros(len(matriz))
     for linha in range(len(matriz)):
-        pivotear(matriz,linha,mZeros)
-        zerarColuna(matriz,linha,mZeros)
+        pivotear(matriz,linha,matriz_l)
+        zerarColuna(matriz,linha,matriz_l)
+    print("Matriz L")
+    imprime(matriz_l)
+    print("Matriz U")
     imprime(matriz)
-    imprime(mZeros)
+    return matriz_l, matriz
 
+def resolverSistema(matriz,vet_b):
+    matriz_l, matriz_u = eliminacaoGauss(matriz)
+    triangular_superior(matriz_l,vet_b)
+
+def triangular_superior(matriz,vet):
+    vet_resp = []
+    for i in range(len(matriz)):
+        soma = 0
+        # print('oie')
+        for j in range(i):
+            soma += matriz[i][j]*vet_resp[j]
+        print(soma)
+        vet_resp.append(vet[i]-soma)
+    print(vet_resp)
+
+def triangular_inferior(matriz,vet):
+    vet_resp = []
+    for i in range(len(matriz)):
+        soma = 0
+        # print('oie')
+        for j in range(i):
+            soma += matriz[i][j]*vet_resp[j]
+        print(soma)
+        vet_resp.append(vet[i]-soma)
 
 if __name__ == '__main__':
-    matriz =    [[2,-1,4,0],
-                [4,-1,5,1],
-                [-2,2,-2,3],
-                [0,3,-9,4]]
-    eliminacaoGauss(matriz)
-            
+    # matriz =    [[2,-1,4,0],
+    #             [4,-1,5,1],
+    #             [-2,2,-2,3],
+    #             [0,3,-9,4]]
+    # eliminacaoGauss(matriz)
+    matriz =    [[1,0,0],
+                [2,1,0],
+                [-1,0,1]]
+                
+    b = [2,-1,1]
+    triangular_superior(matriz,b)
