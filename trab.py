@@ -1,76 +1,81 @@
-
-#mover o maior pivo para cima
-def moverPivo(matriz,linha,coluna):
-    maior = linha
-    for i in range(linha,len(matriz)):
-        if abs(matriz[i][coluna]) > abs(matriz[maior][coluna]):
-            maior = i
-    matriz[linha], matriz[maior] = matriz[maior], matriz[linha]
+def zerarColuna(matriz,linha,matrizB):
+    coluna = linha
+    matrizB[linha][coluna] = 1
+    for i in range(linha+1,len(matriz)):
+        multiplicador = matriz[i][coluna]/matriz[linha][coluna]
+        matrizB[i][coluna] = multiplicador
+        #subtrair linhas
+        for j in range(coluna,len(matriz)):
+            matriz[i][j] -= matriz[linha][j]*multiplicador
 
 def imprime(matriz):
     for linha in matriz:
         print(linha)
-    print("\n")
 
+def pivotear(matriz,coluna,mZeros):
+    linha = coluna
+    maior = coluna
+    for i in range(linha, len(matriz)):
+        if abs(matriz[i][coluna]) > matriz[maior][coluna]:
+            maior = i
+    matriz[linha], matriz[maior] = matriz[maior],matriz[linha]
+    mZeros[linha], mZeros[maior] = mZeros[maior], mZeros[linha]
 
-def matrizZeros(tam):
+def matriz_de_zeros(tam):
     matriz = []
-    for i in range(0,tam):
-        linha = [0 for j in range(tam)]
+    for i in range(tam):
+        linha = []
+        for j in range(tam):
+            linha.append(0)
         matriz.append(linha)
     return matriz
 
-
-def a(matriz):
-    for i in range(len(matriz)):
-        for j in range(len(matriz)):
-            if(matriz[i][i]) == 0:
-                matriz[i] = matriz[i] + matriz[j]
-                break
-    
-    pass
-
-#subtrair l2 em l1
-def subtrairLinhas(l1,l2,multiplicador):
-    for i in range(len(l1)):
-        l1[i] = l1[i] - l2[i]*multiplicador
-
-
-
-def zerarColuna(matriz,coluna):
-    for i in range(coluna+1,len(matriz)):
-        multiplicador = matriz[i][coluna]/matriz[coluna][coluna]
-        subtrairLinhas(matriz[i],matriz[coluna],multiplicador)
-        
-
-
-
-def fatLU(matriz):
-    # a(matriz)
-    matriz_l = matrizZeros(len(matriz))
-    for i in range(len(matriz)-1):
-        moverPivo(matriz,i,i)
-        zerarColuna(matriz,i)
-        # imprime(matriz)
-        # for j in range(i):
-        # for k in range(i,len(matriz)):
-            # matriz_l[k][i] = matriz[k][i]/matriz[i][i]
+def eliminacaoGauss(matriz):
+    # verificarDiagonalPrincipal(matriz)
+    matriz_l = matriz_de_zeros(len(matriz))
+    for linha in range(len(matriz)):
+        pivotear(matriz,linha,matriz_l)
+        zerarColuna(matriz,linha,matriz_l)
+    print("Matriz L")
+    imprime(matriz_l)
+    print("Matriz U")
     imprime(matriz)
+    return matriz_l, matriz
 
+def resolverSistema(matriz,vet_b):
+    matriz_l, matriz_u = eliminacaoGauss(matriz)
+    triangular_superior(matriz_l,vet_b)
 
+def triangular_superior(matriz,vet):
+    vet_resp = []
+    for i in range(len(matriz)):
+        soma = 0
+        # print('oie')
+        for j in range(i):
+            soma += matriz[i][j]*vet_resp[j]
+        print(soma)
+        vet_resp.append(vet[i]-soma)
+    print(vet_resp)
 
+def triangular_inferior(matriz,vet):
+    vet_resp = []
+    for i in range(len(matriz)):
+        soma = 0
+        # print('oie')
+        for j in range(i):
+            soma += matriz[i][j]*vet_resp[j]
+        print(soma)
+        vet_resp.append(vet[i]-soma)
 
-
-linhas = int(input())
-colunas = int(input())
-matriz = []
-for i in range(linhas):
-    linha = input().split(" ")
-    linha = [int(x) for x in linha]
-
-    matriz.append(linha)
-fatLU(matriz)
-
-# imprime(matrizZeros(linhas))
-# moverPivo(matriz,0,0)
-# imprime(matriz)
+if __name__ == '__main__':
+    # matriz =    [[2,-1,4,0],
+    #             [4,-1,5,1],
+    #             [-2,2,-2,3],
+    #             [0,3,-9,4]]
+    # eliminacaoGauss(matriz)
+    matriz =    [[1,0,0],
+                [2,1,0],
+                [-1,0,1]]
+                
+    b = [2,-1,1]
+    triangular_superior(matriz,b)
